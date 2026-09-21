@@ -3,12 +3,18 @@ services:
     build: ./mock_api
     ports:
       - "5000:5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/v1/jobs/events')"]
+      interval: 2s
+      timeout: 2s
+      retries: 5
 
-  # Add your own service here once you've built your solution, e.g.:
-  #
-  # runner:
-  #   build: .
-  #   depends_on:
-  #     - mock_api
-  #   environment:
-  #     - MOCK_API_URL=http://mock_api:5000
+  runner:
+    build: .
+    depends_on:
+      mock_api:
+        condition: service_healthy
+    environment:
+      - MOCK_API_URL=http://mock_api:5000
+      - SAMPLE_FPS=2.0
+      - VIDEO_PATH=synthetic_pitch_feed.mp4
