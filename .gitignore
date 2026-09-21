@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.mp4
+.idea/
+.vscode/
+.pytest_cache/
+run_summary.json
+*.log
